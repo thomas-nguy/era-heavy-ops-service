@@ -682,6 +682,7 @@ fn create_proof<AM: ArtifactProvider>(
     let ProverMessage(assembly, job_id, circuit_id, mut setup) = input;
 
     let setup = if let Some(setup_cache) = setup_cache {
+        println!("try load_setup_or_read_from_cache");
         load_setup_or_read_from_cache(
             ctx.clone(),
             setup_cache.as_ref(),
@@ -699,17 +700,21 @@ fn create_proof<AM: ArtifactProvider>(
         let proof_generated = std::time::Instant::now();
         println!("Creating proof for job-id: {}", job_id);
         let result = if circuit_id == 0 {
+            println!("try create_proof_with_proving_assembly_and_transcript and circuit 0");
             prover.create_proof_with_proving_assembly_and_transcript::<_, RollingKeccakTranscript<Fr>>(&assembly, setup.as_setup(), None)
         } else {
             let rescue_params = bn254_rescue_params();
             let rns_params = get_prefered_rns_params();
             let transcript_params = Some((&rescue_params, &rns_params));
+            println!("try create_proof_with_proving_assembly_and_transcript");
             prover.create_proof_with_proving_assembly_and_transcript::<_, RescueTranscriptForRecursion>(&assembly, setup.as_setup(), transcript_params)
         };
         let proof_generated = proof_generated.elapsed();
+        println!("finish proof generation");
         match result {
             Ok(proof) => {
                 let proof = ZkSyncProof::from_proof_and_numeric_type(circuit_id, proof);
+                println!("try verify proof");
                 if vk.verify_proof(&proof) {
                     JobResult::ProofGenerated(job_id, proof_generated, proof, prover_idx)
                 } else {
@@ -717,6 +722,7 @@ fn create_proof<AM: ArtifactProvider>(
                 }
             }
             Err(msg) => {
+                println!("got error {:?}", msg);
                 // JobResult::Failure(job_id, format!("proof generation failed: {}", msg))
                 let mut assembly_encoding =
                     Vec::with_capacity(calculate_serialization_capacity_for_proving_assembly());
