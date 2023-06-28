@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 gpu-prover = {path = "../gpu-prover", optional = true}
-bellman = {package = "bellman_ce", git = "https://github.com/matter-labs/bellman", branch = "dev", optional = true}
+bellman = {package = "bellman_ce", git = "https://github.com/thomas-nguy/bellman", branch ="thomas/print", optional = true}
 # bellman = { package = "bellman_ce", path = "../../bellman", optional = true }
 cfg-if = "1.*"
 num_cpus = "*"

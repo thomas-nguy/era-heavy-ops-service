@@ -70,6 +70,8 @@ impl Prover {
             "circuit polynomial degree is greater than number of bases"
         );
 
+        println!("try create_proof_by_ref");
+        println!("circuit polynomial degree {:?}", setup.n);
         let proof = assembly.create_proof_by_ref::<_, T>(
             &self.context.worker,
             &setup,
