@@ -316,6 +316,7 @@ pub fn custom_assembly_serialization<W: Write>(assembly: &ProvingAssembly, buffe
 pub fn custom_assembly_deserialization<R: Read>(encoding: &mut R, assembly: &mut ProvingAssembly) {
     deserialize_assignments(encoding, assembly);
     deserialize_variables(encoding, assembly);
+    println!("deserialize_tables");
     deserialize_tables(encoding, assembly);
 }
 
@@ -437,6 +438,7 @@ fn deserialize_tables<R: Read>(encoding: &mut R, assembly: &mut ProvingAssembly)
     encoding.read(&mut num_tables_as_bytes[..]).unwrap();
     let num_tables = usize::from_le_bytes(num_tables_as_bytes);
 
+    println!("deserialize_tables {:?}",num_tables);
     if num_tables == 0 {
         return;
     }

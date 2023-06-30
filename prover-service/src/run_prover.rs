@@ -337,6 +337,7 @@ fn spawn_new_assembly_decoding(
         let assembly_decoded = std::time::Instant::now();
 
         use super::remote_synth::custom_assembly_deserialization;
+        println!("custom deserialisation");
         custom_assembly_deserialization(&mut encoded_assembly, &mut reusable_assembly);
         drop(encoded_assembly);
 
@@ -354,7 +355,7 @@ fn spawn_new_assembly_decoding(
                 assembly_finalized.elapsed(),
             ))
             .unwrap();
-
+        println!("reusable_assembly {:?}", reusable_assembly.tables.len());
         ctx.main_prover_input_sender
             .send(ProverMessage(reusable_assembly, job_id, circuit_id, None))
             .unwrap();

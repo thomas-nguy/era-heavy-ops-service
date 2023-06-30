@@ -226,7 +226,12 @@ impl Prover {
         vk: &VerificationKey<Bn256, C>,
         transcript_params: Option<T::InitializationParameters>,
     ) -> Result<bool, SynthesisError> {
+        println!("vk.n {:?}", vk.n);
+        println!("proof.n {:?}", proof.n);
         assert_eq!(vk.n, proof.n);
+        assert_eq!(vk.n, proof.n);
+        println!("vk.num_inputs {:?}", proof.n);
+        println!("proof.inputs.len() {:?}", proof.inputs.len());
         assert_eq!(vk.num_inputs, proof.inputs.len());
 
         let start = std::time::Instant::now();
