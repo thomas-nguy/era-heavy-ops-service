@@ -456,6 +456,7 @@ fn deserialize_tables<R: Read>(encoding: &mut R, assembly: &mut ProvingAssembly)
     assert_eq!(table_names.len(), table_ids.len());
 
     for (table_name, table_id) in table_names.iter().zip(table_ids) {
+        println!("table name {:?}",table_name.clone());
         assembly
             .known_table_ids
             .insert(table_name.clone(), table_id);
@@ -483,6 +484,8 @@ fn deserialize_tables<R: Read>(encoding: &mut R, assembly: &mut ProvingAssembly)
         deserialize_generic(encoding, table);
     }
     assert_eq!(individual_table_entries.len(), num_tables);
+    println!("end deserialize_tables ");
+    println!("table  {:?}",assembly.tables.len());
 }
 
 fn serialize_generic<T, W: Write>(data: &[T], buffer: &mut W) {
